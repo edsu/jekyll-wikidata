@@ -1,6 +1,7 @@
 # Jekyll::Wikidata
 
-TODO: Write a gem description
+This Jekyll plugin lets you integrate data from [Wikidata](https://wikidata.org)
+into your Jekyll static site.
 
 ## Installation
 
