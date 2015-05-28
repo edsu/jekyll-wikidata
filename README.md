@@ -1,7 +1,6 @@
 # Jekyll::Wikidata
 
-This Jekyll plugin lets you integrate data from [Wikidata](https://wikidata.org)
-into your Jekyll static site.
+This [Jekyll](http://jekyllrb.com/) plugin lets you integrate data from [Wikidata](https://wikidata.org) into your Jekyll static site.
 
 ## Installation
 
