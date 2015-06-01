@@ -4,3 +4,4 @@ require 'wikidata'
 require "jekyll/wikidata/version"
 require 'jekyll/wikidata/generator'
 require 'jekyll/wikidata/writer'
+require 'jekyll/wikidata/command'
