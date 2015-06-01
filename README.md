@@ -1,5 +1,7 @@
 # Jekyll::Wikidata
 
+[![Build Status](https://travis-ci.org/edsu/jekyll-wikidata.svg)](http://travis-ci.org/edsu/jekyll-wikidata)
+
 This [Jekyll](http://jekyllrb.com/) plugin lets you integrate data from [Wikidata](https://wikidata.org) into your Jekyll static site.
 
 ## Installation

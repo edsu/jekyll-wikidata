@@ -2,10 +2,11 @@ module Jekyll::Wikidata
 
   class Writer
 
-    attr_reader :map
+    attr_reader :claims, :lang
 
-    def initialize(map)
-      @map = map
+    def initialize(lang="eng", claims={})
+      @lang = lang
+      @claims = claims 
     end
     
     def write(page)

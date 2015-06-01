@@ -1,3 +1,10 @@
+PATH
+  remote: .
+  specs:
+    jekyll-wikidata (0.0.1)
+      jekyll
+      wikidata-client
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -6,11 +13,14 @@ GEM
       timers (~> 4.0.0)
     classifier-reborn (2.0.3)
       fast-stemmer (~> 1.0)
+    coderay (1.1.0)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
     colorator (0.1)
+    diff-lcs (1.2.5)
+    excon (0.45.3)
     execjs (2.5.2)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
@@ -43,7 +53,6 @@ GEM
       sass (~> 3.2)
     jekyll-watch (1.2.1)
       listen (~> 2.7)
-    json (1.8.2)
     kramdown (1.7.0)
     liquid (2.6.2)
     listen (2.10.0)
@@ -51,24 +60,45 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     mercenary (0.3.5)
+    method_source (0.8.2)
     multipart-post (2.0.0)
     parslet (1.5.0)
       blankslate (~> 2.0)
     posix-spawn (0.3.11)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     pygments.rb (0.6.3)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.2.0)
+    rake (10.4.2)
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     redcarpet (3.2.3)
+    rspec (3.2.0)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+    rspec-core (3.2.3)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.2)
     safe_yaml (1.0.4)
     sass (3.4.14)
+    slop (3.6.0)
     timers (4.0.1)
       hitimes
     toml (0.1.2)
       parslet (~> 1.5.0)
-    wikidata-client (0.0.6)
+    wikidata-client (0.0.7)
+      excon (~> 0.40)
       faraday (~> 0.9)
       faraday_middleware (~> 0.9)
       hashie (~> 3.3)
@@ -78,6 +108,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  jekyll
-  json
-  wikidata-client
+  bundler (~> 1.6)
+  jekyll-wikidata!
+  pry
+  rake
+  rspec
