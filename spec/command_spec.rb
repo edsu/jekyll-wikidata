@@ -26,7 +26,8 @@ RSpec.describe(Jekyll::Commands::Wikidata) do
   let(:site) { Jekyll::Site.new(config) }
 
   before(:each) do
-    described_class.process
+    puts "hi"
+    #described_class.process
   end
 
   it "can " do

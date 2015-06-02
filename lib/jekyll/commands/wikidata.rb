@@ -7,13 +7,18 @@ module Jekyll
 	  c.syntax "wikidata"
 	  c.description "Populate wikidata frontmatter"
 	  c.action do |args, options|
-	    Jekyll::Commands:Wikidata.process(args, options)
+	    self.process(args, options)
 	  end
 	end
       end
 
       def self.process(args=[], options={}) 
-	puts 'hi'
+	config = configuration_from_options(options)
+	site = Jekyll::Site.new(config)
+	#puts site.methods
+	for posts in site.posts
+	  puts posts
+	end
       end
 
     end
