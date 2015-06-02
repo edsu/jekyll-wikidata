@@ -1,14 +1,13 @@
-require 'fileutils'
 require 'spec_helper'
 
 RSpec.describe(Jekyll::Commands::AddWikidata) do
 
+  before :each do
+    create_source_dir
+  end
+
 
   it "can populate page front matter with wikidata" do
-
-    FileUtils.cp_r()
-
-
     overrides = {
       "source" => source_dir,
       "destination" => dest_dir,
@@ -23,13 +22,14 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
         }
       }
     }
-
     config = Jekyll.configuration(overrides)
     site = Jekyll::Site.new(config)
     described_class.process(args=[], options=overrides)
 
+    # create new site object and see that frontmatter was populated
     new_site = Jekyll::Site.new(config)
     new_site.read
+
     page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
     expect(page).to be_truthy
     expect(page['wikidata']['id']).to eq("Q6882")

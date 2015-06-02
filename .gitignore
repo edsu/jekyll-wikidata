@@ -21,4 +21,5 @@ tmp
 *.a
 mkmf.log
 spec/dest
+spec/source
 .sass-cache

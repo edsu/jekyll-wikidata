@@ -23,7 +23,6 @@ module Jekyll
         # TODO: process posts and collections too?
         for page in site.pages
           if page['wikidata']
-
             path = File.join(site.source, page.path)
             writer.write(path, page.data, page.content)
           end

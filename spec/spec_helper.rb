@@ -24,4 +24,14 @@ RSpec.configure do |config|
   def dest_dir(*files)
     File.join(DEST_DIR, *files)
   end
+
+  def capture_stdout
+    $old_stdout = $stdout
+    $stdout = StringIO.new
+    yield
+    $stdout.rewind
+    return $stdout.string
+  ensure
+    $stdout = $old_stdout
+  end
 end
