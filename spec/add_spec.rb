@@ -13,7 +13,7 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
       "destination" => dest_dir,
       "url" => "http://example.org",
       "wikidata" => {
-        "lang" => "eng",
+        "lang" => "en",
         "claims" => {
           "P18" => "image",
           "P569" => "birth",
@@ -34,6 +34,11 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
     expect(page).to be_truthy
     expect(page['wikidata']['id']).to eq("Q6882")
     expect(page['wikidata']['label']).to eq("James Joyce")
+    expect(page['wikidata']['description']).to eq('Irish novelist and poet')
+    expect(page['wikidata']['birth']).to eq('1882-02-02T00:00:00+00:00')
+    expect(page['wikidata']['birthplace']).to eq('Dublin')
+    expect(page['wikidata']['image']).to eq('https://upload.wikimedia.org/wikipedia/commons/1/1e/Revolutionary_Joyce_Better_Contrast.jpg')
+
   end
 
 end
