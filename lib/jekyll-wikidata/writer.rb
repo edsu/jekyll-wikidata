@@ -8,8 +8,8 @@ module Jekyll
         @lang = @config['lang'] || 'en'
         @claims = @config['claims'] || {}
 
-        if @config['download_images'] and @claims['P18'] == nil
-          @claims['P18']
+        if @config['image'] and @claims['P18'] == nil
+          @claims['P18'] = true
         end
       end
 
@@ -50,8 +50,12 @@ module Jekyll
           end
         end
 
-        if @config['download_images']
+        if @config['image']
           wikidata['image'] = download_image(path, item)
+        end
+
+        if @config['summary']
+          wikidata['summary'] = get_summary(wikidata['label'], item)
         end
 
         File.open(path, 'w') { |f|
@@ -81,6 +85,13 @@ module Jekyll
         puts "downloaded #{img.url} to #{img_path}"
 
         return File.basename img_path
+      end
+
+      def get_summary(label, item)
+        url = "https://#{@lang}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=#{label}"
+        resp = JSON.parse(open(url).read)
+        page_id = resp['query']['pages'].keys[0]
+        return resp['query']['pages'][page_id]['extract']
       end
     end
   end
