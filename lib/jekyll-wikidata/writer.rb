@@ -1,3 +1,5 @@
+require 'open-uri'
+
 module Jekyll
   module Wikidata
     class Writer
@@ -5,50 +7,80 @@ module Jekyll
         @config = config['wikidata']
         @lang = @config['lang'] || 'en'
         @claims = @config['claims'] || {}
+
+        if @config['download_images'] and @claims['P18'] == nil
+          @claims['P18']
+        end
       end
 
-      def write(path, data, content)
-        id = data['wikidata']['id']
-
-        w = ::Wikidata::Item.find(id)
-        if not w
+      def write(path, frontmatter, content)
+        wikidata = frontmatter['wikidata']
+        id = wikidata['id']
+        item = ::Wikidata::Item.find(id)
+        if not item
           puts "Unable to locate Wikidata Item for #{id}"
           return false
         end
 
-        if w.labels[@lang]
-          data["wikidata"]["label"] = w.labels[@lang]['value']
+        if item.labels[@lang]
+          wikidata["label"] = item.labels[@lang]['value']
         else
-          data["wikidata"]["label"] = ""
+          wikidata["label"] = ""
         end
 
-        if w.descriptions[@lang]
-          data["wikidata"]["description"] = w.descriptions[@lang]['value']
+        if item.descriptions[@lang]
+          wikidata["description"] = item.descriptions[@lang]['value']
         else
-          data["wikidata"]["description"] = ""
+          wikidata["description"] = ""
         end
 
         @claims.each do |code, name|
-          claim = w.property(code)
+          claim = item.property(code)
           if name == true
             name = code
           end
           if claim
             if claim.respond_to? 'title'
-              data["wikidata"][name] = claim.title
+              wikidata[name] = claim.title
             elsif claim.respond_to? 'url'
-              data["wikidata"][name] = claim.url
+              wikidata[name] = claim.url
             elsif claim.respond_to? 'date'
-              data["wikidata"][name] = claim.date.rfc3339
+              wikidata[name] = claim.date.rfc3339
             end
           end
         end
 
+        if @config['download_images']
+          wikidata['image'] = download_image(path, item)
+        end
+
         File.open(path, 'w') { |f|
-          f.puts(data.to_yaml)
+          f.puts(frontmatter.to_yaml)
           f.puts('---')
           f.puts(content)
         }
+
+      end
+
+      def download_image(path, item)
+        img = item.property('P18')
+        if not img
+          return nil
+        end
+
+        url_ext = File.extname img.url
+        img_path = path.gsub(/\..+?$/, url_ext)
+        if File.exist? img_path
+          puts "#{img_path} already exists"
+          return nil
+        end
+
+        open img_path, 'wb' do |file|
+          file << open(img.url).read
+        end
+        puts "downloaded #{img.url} to #{img_path}"
+
+        return File.basename img_path
       end
     end
   end

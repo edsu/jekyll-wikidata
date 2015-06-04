@@ -36,7 +36,27 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
     expect(page['wikidata']['birth']).to eq('1882-02-02T00:00:00+00:00')
     expect(page['wikidata']['birthplace']).to eq('Dublin')
     expect(page['wikidata']['image']).to eq('https://upload.wikimedia.org/wikipedia/commons/1/1e/Revolutionary_Joyce_Better_Contrast.jpg')
+    expect(page.content).to eq("Hi\n")
+  end
 
+  it "can populate image files" do
+    overrides = {
+      "source" => source_dir,
+      "destination" => dest_dir,
+      "wikidata" => {
+        "download_images" => true
+      }
+    }
+    config = Jekyll.configuration(overrides)
+    site = Jekyll::Site.new(config)
+    described_class.process(args=[], options=overrides)
+
+    new_site = Jekyll::Site.new(config)
+    new_site.read
+    page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
+
+    expect(page['wikidata']['image']).to eq("joyce.jpg")
+    expect(File.exist?(dest_dir("author/joyce.jpg")))
   end
 
 end
