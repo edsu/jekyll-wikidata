@@ -20,13 +20,22 @@ module Jekyll
         site.reset
         site.read
 
-        # TODO: process posts and collections too?
+	# process pages
         for page in site.pages
-          if page['wikidata']
-            path = File.join(site.source, page.path)
-            writer.write(path, page.data, page.content)
-          end
+	  if page['wikidata']
+	    path = File.join(site.source, page.path)
+	    writer.write(path, page.data, page.content)
+	  end
         end
+
+	# process collections
+	site.collections.each do |coll_name, coll| 
+	  for doc in coll.docs
+	    if doc.data['wikidata']
+	      writer.write(doc.path, doc.data, doc.content)
+	    end
+	  end
+	end
       end
 
     end
