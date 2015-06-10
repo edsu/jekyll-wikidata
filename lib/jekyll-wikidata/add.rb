@@ -23,6 +23,7 @@ module Jekyll
 	# process pages
         for page in site.pages
 	  if page['wikidata']
+	    puts "processing #{page.path}"
 	    path = File.join(site.source, page.path)
 	    writer.write(path, page.data, page.content)
 	  end
