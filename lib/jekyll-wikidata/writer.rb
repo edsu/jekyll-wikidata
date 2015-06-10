@@ -82,7 +82,7 @@ module Jekyll
         end
 
         open img_path, 'wb' do |file|
-          file << open(img.url).read
+          file << open(URI(img.url)).read
         end
         puts "downloaded #{img.url} to #{img_path}"
 
