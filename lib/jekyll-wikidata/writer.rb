@@ -16,6 +16,8 @@ module Jekyll
       def write(path, frontmatter, content)
         wikidata = frontmatter['wikidata']
         id = wikidata['id']
+	return if not id 
+
         item = ::Wikidata::Item.find(id)
         if not item
           puts "Unable to locate Wikidata Item for #{id}"
