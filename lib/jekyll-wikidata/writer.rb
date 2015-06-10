@@ -16,7 +16,7 @@ module Jekyll
       def write(path, frontmatter, content)
         wikidata = frontmatter['wikidata']
         id = wikidata['id']
-	return if not id 
+	return false if not id 
 
         item = ::Wikidata::Item.find(id)
         if not item
@@ -30,7 +30,7 @@ module Jekyll
           wikidata["label"] = ""
         end
 
-        if item.descriptions[@lang]
+        if item.descriptions and item.descriptions[@lang]
           wikidata["description"] = item.descriptions[@lang]['value']
         else
           wikidata["description"] = ""
