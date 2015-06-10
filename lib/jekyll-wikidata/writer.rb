@@ -1,3 +1,4 @@
+require 'cgi'
 require 'open-uri'
 
 module Jekyll
@@ -82,7 +83,7 @@ module Jekyll
         end
 
         open img_path, 'wb' do |file|
-          file << open(URI(img.url)).read
+          file << open(URI::encode(img.url)).read
         end
         puts "downloaded #{img.url} to #{img_path}"
 
@@ -90,7 +91,7 @@ module Jekyll
       end
 
       def get_summary(label, item)
-        url = URI.encode("http://#{@lang}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=#{label}")
+        url = URI::encode("http://#{@lang}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=#{label}")
         resp = JSON.parse(open(url).read)
         page_id = resp['query']['pages'].keys[0]
         return resp['query']['pages'][page_id]['extract']
