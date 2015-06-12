@@ -54,7 +54,7 @@ module Jekyll
         end
 
         if @config['image']
-          wikidata['image'] = download_image(path, item)
+          wikidata['image'] = download_image(path, item, @config['image'])
         end
 
         if @config['summary']
@@ -69,7 +69,7 @@ module Jekyll
 
       end
 
-      def download_image(path, item)
+      def download_image(path, item, size)
         img = item.property('P18')
         if not img
           return nil
@@ -82,16 +82,21 @@ module Jekyll
           return nil
         end
 
+	img_url = img.url
         open img_path, 'wb' do |file|
-          file << open(URI::encode(img.url)).read
+	  if size and size.respond_to? :to_i
+	    img_url = img.url(size.to_i)
+	  end
+	  puts "fetching #{img_url}"
+          file << open(URI::encode(img_url)).read
         end
-        puts "downloaded #{img.url} to #{img_path}"
+        puts "downloaded #{img_url} to #{img_path}"
 
         return File.basename img_path
       end
 
       def get_summary(label, item)
-        url = URI::encode("http://#{@lang}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=#{label}")
+        url = URI::encode("https://#{@lang}.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=#{label}")
         resp = JSON.parse(open(url).read)
         page_id = resp['query']['pages'].keys[0]
         return resp['query']['pages'][page_id]['extract']

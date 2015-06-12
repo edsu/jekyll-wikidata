@@ -63,6 +63,29 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
     end
   end
 
+  it "can get thumbnail image file" do
+    capture_stdout do 
+      overrides = {
+        "source" => source_dir,
+        "destination" => dest_dir,
+        "wikidata" => {
+          "image" => "100"
+        }
+      }
+      config = Jekyll.configuration(overrides)
+      site = Jekyll::Site.new(config)
+      described_class.process(args=[], options=overrides)
+
+      new_site = Jekyll::Site.new(config)
+      new_site.read
+      page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
+
+      expect(page['wikidata']['image']).to eq("joyce.jpg")
+      expect(File.exist?(dest_dir("author/joyce.jpg")))
+    end
+  end
+
+
   it "can fetch summary" do
     capture_stdout do
       overrides = {
