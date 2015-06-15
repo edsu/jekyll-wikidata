@@ -31,12 +31,12 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
       new_site.read
       page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
       expect(page).to be_truthy
-      expect(page['wikidata']['id']).to eq("Q6882")
-      expect(page['wikidata']['label']).to eq("James Joyce")
-      expect(page['wikidata']['description']).to eq('Irish novelist and poet')
-      expect(page['wikidata']['birth']).to eq('1882-02-02T00:00:00+00:00')
-      expect(page['wikidata']['birthplace']).to eq('Dublin')
-      expect(page['wikidata']['image']).to eq('https://upload.wikimedia.org/wikipedia/commons/1/1e/Revolutionary_Joyce_Better_Contrast.jpg')
+      expect(page['wikidata_id']).to eq("Q6882")
+      expect(page['label']).to eq("James Joyce")
+      expect(page['description']).to eq('Irish novelist and poet')
+      expect(page['birth']).to eq('1882-02-02T00:00:00+00:00')
+      expect(page['birthplace']).to eq('Dublin')
+      expect(page['image']).to eq('https://upload.wikimedia.org/wikipedia/commons/1/1e/Revolutionary_Joyce_Better_Contrast.jpg')
       expect(page.content).to eq("Hi\n")
     end
   end
@@ -58,7 +58,7 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
       new_site.read
       page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
 
-      expect(page['wikidata']['image']).to eq("joyce.jpg")
+      expect(page['image']).to eq("joyce.jpg")
       expect(File.exist?(dest_dir("author/joyce.jpg")))
     end
   end
@@ -80,7 +80,7 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
       new_site.read
       page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
 
-      expect(page['wikidata']['image']).to eq("joyce.jpg")
+      expect(page['image']).to eq("joyce.jpg")
       expect(File.exist?(dest_dir("author/joyce.jpg")))
     end
   end
@@ -102,7 +102,7 @@ RSpec.describe(Jekyll::Commands::AddWikidata) do
       new_site = Jekyll::Site.new(config)
       new_site.read
       page = new_site.pages.select {|p| p.path == "authors/joyce.md"}[0]
-      expect(page['wikidata']['summary']).to match(/was an Irish novelist and poet/)
+      expect(page['summary']).to match(/was an Irish novelist and poet/)
     end
   end
 

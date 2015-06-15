@@ -22,7 +22,7 @@ module Jekyll
 
 	# process pages
         for page in site.pages
-	  if page['wikidata']
+	  if page['wikidata_id']
 	    puts "processing #{page.path}"
 	    path = File.join(site.source, page.path)
 	    writer.write(path, page.data, page.content)
@@ -32,7 +32,7 @@ module Jekyll
 	# process collections
 	site.collections.each do |coll_name, coll| 
 	  for doc in coll.docs
-	    if doc.data['wikidata']
+	    if doc.data['wikidata_id']
 	      writer.write(doc.path, doc.data, doc.content)
 	    end
 	  end

@@ -4,19 +4,18 @@ require 'open-uri'
 module Jekyll
   module Wikidata
     class Writer
+
       def initialize(config)
         @config = config['wikidata'] || {}
         @lang = @config['lang'] || 'en'
         @claims = @config['claims'] || {}
-
         if @config['image'] and @claims['P18'] == nil
           @claims['P18'] = true
         end
       end
 
       def write(path, frontmatter, content)
-        wikidata = frontmatter['wikidata']
-        id = wikidata['id']
+        id = frontmatter['wikidata_id']
 	return false if not id 
 
         item = ::Wikidata::Item.find(id)
@@ -26,15 +25,15 @@ module Jekyll
         end
 
         if item.labels[@lang]
-          wikidata["label"] = item.labels[@lang]['value']
+          frontmatter["label"] = item.labels[@lang]['value']
         else
-          wikidata["label"] = ""
+          frontmatter["label"] = ""
         end
 
         if item.descriptions and item.descriptions[@lang]
-          wikidata["description"] = item.descriptions[@lang]['value']
+          frontmatter["description"] = item.descriptions[@lang]['value']
         else
-          wikidata["description"] = ""
+          frontmatter["description"] = ""
         end
 
         @claims.each do |code, name|
@@ -44,21 +43,21 @@ module Jekyll
           end
           if claim
             if claim.respond_to? 'title'
-              wikidata[name] = claim.title
+              frontmatter[name] = claim.title
             elsif claim.respond_to? 'url'
-              wikidata[name] = claim.url
+              frontmatter[name] = claim.url
             elsif claim.respond_to? 'date'
-              wikidata[name] = claim.date.rfc3339
+              frontmatter[name] = claim.date.rfc3339
             end
           end
         end
 
         if @config['image']
-          wikidata['image'] = download_image(path, item, @config['image'])
+          frontmatter['image'] = download_image(path, item, @config['image'])
         end
 
         if @config['summary']
-          wikidata['summary'] = get_summary(wikidata['label'], item)
+          frontmatter['summary'] = get_summary(frontmatter['label'], item)
         end
 
         File.open(path, 'w') { |f|

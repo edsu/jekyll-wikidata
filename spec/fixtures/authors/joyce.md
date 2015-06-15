@@ -1,6 +1,5 @@
 ---
 layout: page
-wikidata:
-  id: Q6882
+wikidata_id: Q6882
 ---
 Hi
