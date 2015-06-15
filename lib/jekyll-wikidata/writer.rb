@@ -74,7 +74,7 @@ module Jekyll
           return nil
         end
 
-        url_ext = File.extname img.url
+        url_ext = File.extname(img.url).downcase
         img_path = path.gsub(/\..+?$/, url_ext)
         if File.exist? img_path
           puts "#{img_path} already exists"
